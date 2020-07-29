@@ -2,7 +2,7 @@ FROM openjdk:11
 MAINTAINER walfud "hi@walfud.com"
 
 COPY ./gradleWrapper/6.5.1/ /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
-RUN cd /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/ && chmod +x ./gradlew && ./gradlew
+RUN cd /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/ && chmod +x ./gradlew && ./gradlew --stop
 RUN rm -rf /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
 
 #
