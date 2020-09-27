@@ -8,6 +8,7 @@ ARG JAVA_PATCH_VERSION=28
 ENV JAVA_HOME=/opt/jdk-${JAVA_VERSION}
 ARG GRADLE_VERSION=6.6.1
 ARG ANDROID_COMMANDLINE_VERSION=6609375
+ARG ANDROID_NDK_VERSION=21.0.6113669
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
 ENV PATH=$PATH:$JAVA_HOME/bin:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools
 
@@ -48,7 +49,7 @@ RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
     "build-tools;30.0.2" \
     "platforms;android-28" "platforms;android-29" "platforms;android-30" \
     "cmake;3.6.4111459" \
-    "ndk;21.0.6113669"
+    "ndk;${ANDROID_NDK_VERSION}"
 
 
 WORKDIR /
