@@ -44,12 +44,11 @@ RUN cd /tmp && \
     mv ./tools ${ANDROID_SDK_ROOT}/cmdline-tools && \
     rm commandlinetools-linux-${ANDROID_COMMANDLINE_VERSION}_latest.zip
 RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --licenses
-RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager \
+RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
     "build-tools;30.0.2" \
     "platforms;android-28" "platforms;android-29" "platforms;android-30" \
     "cmake;3.6.4111459" \
-    "ndk-bundle" \
-    --channel=0
+    "ndk-bundle"
 
 
 WORKDIR /
