@@ -52,7 +52,3 @@ RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
 
 
 WORKDIR /
-
-
-
-
