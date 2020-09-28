@@ -1,0 +1,13 @@
+FROM openjdk:11
+MAINTAINER walfud "hi@walfud.com"
+
+# Gradle
+COPY ./gradleWrapper/ /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
+RUN cd /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/ && \
+    chmod +x ./gradlew && \
+    ./gradlew --stop && \
+    rm -rf /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
+
+#
+EXPOSE 80 443 1080 8080
+CMD /bin/bash
