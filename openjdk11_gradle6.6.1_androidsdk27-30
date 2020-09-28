@@ -1,39 +1,10 @@
-FROM ubuntu:20.04
+FROM walfud/dockers:openjdk11_gradle6.6.1
 LABEL maintainer="hi@walfud.com"
 
-
 # Configuration
-ARG JAVA_VERSION=11
-ARG JAVA_PATCH_VERSION=28
-ENV JAVA_HOME=/opt/jdk-${JAVA_VERSION}
-ARG GRADLE_VERSION=6.6.1
 ARG ANDROID_COMMANDLINE_VERSION=6609375
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
-ENV PATH=$PATH:$JAVA_HOME/bin:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools
-
-
-# Basic tool
-RUN apt-get update
-RUN apt-get install -qy wget unzip
-
-
-# Java
-# RUN apt-get install -qy openjdk-$JAVA_VERSION-jdk
-RUN cd /tmp && \
-    wget -q https://download.java.net/openjdk/jdk${JAVA_VERSION}/ri/openjdk-${JAVA_VERSION}+${JAVA_PATCH_VERSION}_linux-x64_bin.tar.gz && \
-    tar zxvf ./openjdk-${JAVA_VERSION}+${JAVA_PATCH_VERSION}_linux-x64_bin.tar.gz && \
-    mkdir -p ${JAVA_HOME%/*} && \
-    mv ./jdk-${JAVA_VERSION} ${JAVA_HOME} && \
-    rm ./openjdk-${JAVA_VERSION}+${JAVA_PATCH_VERSION}_linux-x64_bin.tar.gz
-
-
-# Gradle
-COPY ./gradleWrapper/ /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
-RUN cd /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/ && \
-    chmod +x ./gradlew && \
-    ./gradlew --stop && \
-    rm -rf /tmp/ceee104d-e784-4d12-a7d4-3950337f5e23/
-
+ENV PATH=$PATH:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools
 
 # Android
 # apt install android-sdk
@@ -45,8 +16,6 @@ RUN cd /tmp && \
     rm commandlinetools-linux-${ANDROID_COMMANDLINE_VERSION}_latest.zip
 RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --licenses
 RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
+    "platform-tools" \
     "build-tools;30.0.2" \
     "platforms;android-28" "platforms;android-29" "platforms;android-30"
-
-
-WORKDIR /
