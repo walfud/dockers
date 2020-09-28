@@ -4,7 +4,7 @@ LABEL maintainer="hi@walfud.com"
 # Configuration
 ARG ANDROID_COMMANDLINE_VERSION=6609375
 ENV ANDROID_SDK_ROOT=/opt/android-sdk
-ENV PATH=$PATH:${ANDROID_SDK_ROOT}/tools:${ANDROID_SDK_ROOT}/platform-tools
+ENV PATH=$PATH:${ANDROID_SDK_ROOT}/tools
 
 # Android
 # apt install android-sdk
@@ -16,6 +16,5 @@ RUN cd /tmp && \
     rm commandlinetools-linux-${ANDROID_COMMANDLINE_VERSION}_latest.zip
 RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --licenses
 RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
-    "platform-tools" \
     "build-tools;30.0.2" \
     "platforms;android-28" "platforms;android-29" "platforms;android-30"
