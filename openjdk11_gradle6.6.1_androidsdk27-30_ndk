@@ -1,10 +1,10 @@
 FROM walfud/dockers:openjdk11_gradle6.6.1_androidsdk27-30
+LABEL maintainer="hi@walfud.com"
 
-
+# Configuration
 ARG ANDROID_NDK_VERSION=21.0.6113669
 
-
-# ndk
+# Android ndk
 RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --channel=0 \
     "cmake;3.6.4111459" \
     "ndk;${ANDROID_NDK_VERSION}"
