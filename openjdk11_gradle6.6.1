@@ -31,7 +31,7 @@ RUN cd /tmp/gradleWrapper && \
     rm -rf /tmp/gradleWrapper
 RUN cd ~/.gradle/wrapper/dists/gradle-${GRADLE_VERSION}-bin && \
     cd ./`ls` && \
-    mkdir ${GRADLE_HOME} && \
+    mkdir -p ${GRADLE_HOME} && \
     cp -r ./gradle-${GRADLE_VERSION} ${GRADLE_HOME%/*}
 
 #
