@@ -9,7 +9,7 @@ RUN apt-get install -y vim \
                    cron \
                    git \
                    tree
-RUN apt install -y iputils-ping \
+RUN apt-get install -y iputils-ping \
                    wget \
                    curl \
                    openssh-server
