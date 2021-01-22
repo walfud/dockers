@@ -1,21 +1,22 @@
 FROM nginx:1.19
 LABEL maintainer="hi@walfud.com"
 
-ENV DNS=dns_ali
-ENV KEY=
-ENV SECRET=
-ENV HOST=walfud.com
+# ENV ID=
+# ENV SK=
+# ENV HOST=walfud.com
 
 # Install Utils
 RUN apt-get update
-RUN apt-get install -y curl
+RUN apt-get install -qy git curl cron
 
 # acme
 RUN curl https://get.acme.sh | sh
-RUN export Ali_Key=${KEY}
-RUN export Ali_Secret=${SECRET}
 
-# 
+# Issue Certificate
 WORKDIR /
-ENTRYPOINT acme.sh --issue --dns ${DNS} -d '*.${HOST}'
+ENTRYPOINT export Ali_Key=$ID; \
+           export Ali_Secret=$SK; \
+           ~/.acme.sh/acme.sh --issue --dns dns_ali -d '*.$HOST'; \
+           ~/.acme.sh/acme.sh --install-cert -d *.$HOST --cert-file /cert/\*.${HOST}/cert.pem --key-file /cert/\*.${HOST}/privkey.pem --fullchain-file /cert/\*.${HOST}/fullchain.pem; \
+           /docker-entrypoint.sh
 EXPOSE 80 443
