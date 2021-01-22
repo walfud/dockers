@@ -7,7 +7,7 @@ ENV HOST=walfud.com
 
 # Install Utils
 RUN apt-get update
-RUN apt-get install -qy git curl cron
+RUN apt-get install -qy curl cron
 
 # acme
 RUN curl https://get.acme.sh | sh
