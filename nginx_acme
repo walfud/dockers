@@ -18,6 +18,5 @@ ENTRYPOINT export Ali_Key=$ID; \
            export Ali_Secret=$SK; \
            ~/.acme.sh/acme.sh --issue --dns dns_ali -d "*.$HOST"; \
            mkdir -p "/cert/*.${HOST}"; \
-           ~/.acme.sh/acme.sh --install-cert -d "*.${HOST}" --cert-file "/cert/*.${HOST}/cert.pem" --key-file "/cert/*.${HOST}/privkey.pem" --fullchain-file "/cert/*.${HOST}/fullchain.pem"; \
-           /docker-entrypoint.sh
+           sleep 9999
 EXPOSE 80 443
