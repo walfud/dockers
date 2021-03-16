@@ -1,9 +1,9 @@
 FROM nginx:1.19
 LABEL maintainer="hi@walfud.com"
 
-ENV ID=
-ENV SK=
-ENV HOST=walfud.com
+# ENV ID=
+# ENV SK=
+# ENV HOST=walfud.com
 
 # Install Utils
 RUN apt-get update
@@ -12,12 +12,21 @@ RUN apt-get install -qy curl cron
 # acme
 RUN curl https://get.acme.sh | sh
 
-# Issue Certificate
+# Issue Certificate & Startup nginx
+RUN echo \#!/bin/sh > /my-docker-entrypoint.sh
+RUN echo echo \$@ >> /my-docker-entrypoint.sh
+RUN echo set -x >> /my-docker-entrypoint.sh
+RUN echo export Ali_Key=\$ID >> /my-docker-entrypoint.sh
+RUN echo export Ali_Secret=\$SK >> /my-docker-entrypoint.sh
+RUN echo ~/.acme.sh/acme.sh --issue --dns dns_ali -d "*.\$HOST" >> /my-docker-entrypoint.sh
+RUN echo mkdir -p "/cert/*.\${HOST}" >> /my-docker-entrypoint.sh
+RUN echo ~/.acme.sh/acme.sh --install-cert -d "*.\${HOST}" --cert-file "/cert/*.\${HOST}/cert.pem" --key-file "/cert/*.\${HOST}/privkey.pem" --fullchain-file "/cert/*.\${HOST}/fullchain.pem" >> /my-docker-entrypoint.sh
+RUN echo /docker-entrypoint.sh \"\$@\" >> /my-docker-entrypoint.sh
+RUN chmod +x /my-docker-entrypoint.sh
+
+# 
 WORKDIR /
-ENTRYPOINT export Ali_Key=$ID; \
-           export Ali_Secret=$SK; \
-           ~/.acme.sh/acme.sh --issue --dns dns_ali -d "*.$HOST"; \
-           mkdir -p "/cert/*.${HOST}"; \
-           ~/.acme.sh/acme.sh --install-cert -d "*.${HOST}" --cert-file "/cert/*.${HOST}/cert.pem" --key-file "/cert/*.${HOST}/privkey.pem" --fullchain-file "/cert/*.${HOST}/fullchain.pem"; \
-           /docker-entrypoint.sh
+ENTRYPOINT ["/my-docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
+
 EXPOSE 80 443
