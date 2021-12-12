@@ -18,7 +18,7 @@ RUN echo echo \$@ >> /my-docker-entrypoint.sh
 RUN echo set -x >> /my-docker-entrypoint.sh
 RUN echo export Ali_Key=\$ID >> /my-docker-entrypoint.sh
 RUN echo export Ali_Secret=\$SK >> /my-docker-entrypoint.sh
-RUN echo ~/.acme.sh/acme.sh --issue --dns dns_ali -d "*.\$HOST" >> /my-docker-entrypoint.sh
+RUN echo ~/.acme.sh/acme.sh --issue --dns dns_ali --dnssleep -d "*.\$HOST" >> /my-docker-entrypoint.sh
 RUN echo mkdir -p "/cert/*.\${HOST}" >> /my-docker-entrypoint.sh
 RUN echo ~/.acme.sh/acme.sh --install-cert -d "*.\${HOST}" --cert-file "/cert/*.\${HOST}/cert.pem" --key-file "/cert/*.\${HOST}/privkey.pem" --fullchain-file "/cert/*.\${HOST}/fullchain.pem" >> /my-docker-entrypoint.sh
 RUN echo /docker-entrypoint.sh \"\$@\" >> /my-docker-entrypoint.sh
