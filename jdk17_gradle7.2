@@ -1,0 +1,39 @@
+FROM ubuntu:20.04
+LABEL maintainer="hi@walfud.com"
+
+# Configuration
+ARG JAVA_VERSION=17.0.2
+ARG JAVA_PATCH_VERSION=28
+ENV JAVA_HOME=/opt/jdk-${JAVA_VERSION}
+ARG GRADLE_VERSION=7.2
+ENV GRADLE_HOME=/opt/gradle-${GRADLE_VERSION}
+ENV PATH=$PATH:$JAVA_HOME/bin:${GRADLE_HOME}/bin
+
+# Basic tool
+RUN apt-get update
+RUN apt-get install -qy wget unzip
+
+# Java
+RUN cd /tmp && \
+    wget -q https://download.java.net/java/GA/jdk${JAVA_VERSION}/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-${JAVA_VERSION}_linux-x64_bin.tar.gz && \
+    tar zxvf ./openjdk-${JAVA_VERSION}_linux-x64_bin.tar.gz && \
+    mkdir -p ${JAVA_HOME%/*} && \
+    mv ./jdk-${JAVA_VERSION} ${JAVA_HOME} && \
+    rm ./openjdk-${JAVA_VERSION}_linux-x64_bin.tar.gz
+
+# Gradle
+COPY ./gradleWrapper /tmp/gradleWrapper
+RUN sed -i "s/7.2/${GRADLE_VERSION}/g" /tmp/gradleWrapper/gradle/wrapper/gradle-wrapper.properties
+RUN cd /tmp/gradleWrapper && \
+    chmod +x ./gradlew && \
+    ./gradlew --stop && \
+    rm -rf /tmp/gradleWrapper
+RUN cd ~/.gradle/wrapper/dists/gradle-${GRADLE_VERSION}-bin && \
+    cd ./`ls` && \
+    mkdir -p ${GRADLE_HOME} && \
+    cp -r ./gradle-${GRADLE_VERSION} ${GRADLE_HOME%/*}
+
+#
+EXPOSE 80 443 1080 8080
+WORKDIR /
+CMD /bin/bash
