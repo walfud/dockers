@@ -14,7 +14,8 @@ RUN apt-get install -qy wget unzip
 
 # Java
 RUN cd /tmp && \
-    wget -q https://download.oracle.com/java/17/archive/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz && \
+    wget -q https://download.oracle.com/java/17/archive/jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz
+RUN cd /tmp && \
     tar zxvf ./jdk-${JAVA_VERSION}_linux-x64_bin.tar.gz && \
     mkdir -p ${JAVA_HOME%/*} && \
     mv ./jdk-${JAVA_VERSION} ${JAVA_HOME} && \
